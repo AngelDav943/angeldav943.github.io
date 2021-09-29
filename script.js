@@ -1,35 +1,59 @@
-var targets = [
-    "big fart",
-    "fart",
-    "super epic fart",
-    "fak"
-]
+const input = document.getElementById('MInput')
+const output = document.getElementById('MOutput')
 
-function submit() {
-    var input = document.getElementById('MInput')
-    var output = document.getElementById('MOutput')
-    
-    var correct = 0;
-    var incorrect = 0;
-    
-    const splitinput = input.value.split("")
-    var splittarget = target.split("")
-    var length_dif = target.length - splitinput.length
+var last_fetch;
 
-    for (let i = 0; i < splitinput.length; i++) {
-        if (i < splittarget.length && splittarget[i] === splitinput[i]) {
-            correct++;
+function getForumData() {
+    return new Promise(function(resolve, reject) {
+        if (!last_fetch) {
+            fetch("https://angeldc943.repl.co/api/forum/get").then(res => {
+                res.json().then(data => {
+                    last_fetch = data;
+                    resolve(data)
+                    forumBasicInfo()
+                })
+            })
         } else {
-            incorrect++;
+            resolve(last_fetch)
         }
+    })
+}
+
+function forumBasicInfo() {
+    getForumData().then(data => {
+        var total_posts = 0;
+        for (let i = 0; i < data.length; i++) {
+            const topic = data[i];
+            total_posts += topic.posts.length;
+        }
+
+        document.getElementById('ForumInfo').innerHTML = `${data.length} topics; ${total_posts} posts`;
+    })
+}
+
+forumBasicInfo()
+
+var search = {
+    post: function() {
+        output.innerHTML = "searching post..."
+        
+        
+    },
+    topic: function() {
+        output.innerHTML = "searching topic.."
+        
+        getForumData().then(data => {
+            var returntopic;
+            for (let i = 0; i < data.length; i++) {
+                const topic = data[i];
+                //console.log(`${topic.name} ?? ${input.value} || ${topic.name <= input.value}`)
+                if (topic.name <= input.value) returntopic = topic.name;
+            }
+            return returntopic;
+        }).then(topicname => {
+            output.innerHTML = `Did you mean ${topicname}?`
+            input.value = "";
+        })
+        //'general' <= 'general'
     }
-
-    var result = (correct-incorrect) / (target.length + length_dif);
-
-    if (result < 0) result = 0
-
-    result = Math.ceil(result*100)/100
-
-    output.innerHTML = `${result * 100}% <br> ${correct}-${incorrect}`;
-    input.value = "";
 }

@@ -1,15 +1,19 @@
 <html>
     <head>
         <title>Test text</title>
-        <script src="script.js"></script>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <h1>Test</h1>
-        <div>
-            <input id="MInput" type="text">
-            <input type="button" value="submit" onclick="submit()">
-        </div>
+        <img style="height:100px; width:auto;" src="https://static.angeldc943.repl.co/assets/images/oldmonitor.png">
+        <p id="ForumInfo"></p>
+        <article class="container">
+            <input id="MInput" type="text" placeholder="Search topic/post">
+            <div class="buttons">
+                <input type="button" value="search post" onclick="search.post()">
+                <input type="button" value="search topic" onclick="search.topic()">
+            </div>
+        </article>
         <p id="MOutput"></p>
+        <script src="script.js"></script>
     </body>
 </html>

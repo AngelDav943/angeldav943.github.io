@@ -19,9 +19,22 @@ body {
 
 input {
     border: none;
+    margin:2px;
     padding: 3px 9px;
     color: white;
     background: rgb(100, 100, 100);
+}
+
+.container {
+    width:200px;
+}
+
+.container input {
+    width: calc(100% - 4px);
+}
+
+.container .buttons {
+    display: flex;
 }
 
 input:hover {
