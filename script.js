@@ -41,6 +41,8 @@ function forumBasicInfo() {
 
 forumBasicInfo()
 
+var suggest
+
 var search = {
     post: function() {
         output.innerHTML = "searching post..."
@@ -55,17 +57,8 @@ var search = {
         
         getForumData().then(data => {
             
-            var returntopic;
+            var returntopic = suggest;
             var def = 5;
-
-            for (let i = 0; i < 2; i++) {
-                data.forEach(topic => {
-                    if (hamming_distance(topic.name,input.value) <= def) {
-                        def--;
-                        returntopic = topic.name
-                    }
-                });
-            }
 
             return returntopic;
         }).then(topicname => {
@@ -76,15 +69,26 @@ var search = {
     },
     suggestion: function() {
         var suggestion = document.getElementById('MSuggest')
-        getForumData().then(data => {
+        getForumData().then(forumdata => {
+            var data = [];
+            forumdata.forEach(topic => {
+                data.push(topic.name);
+                topic.posts.forEach(post => {
+                    data.push(`${topic.name} ${post.index}`);
+                });
+            })
+            
             var returntopic;
             var def = 5;
             
-            for (let i = 0; i < 2; i++) {
+            if (data[input.value]) returntopic = data[input.value]
+            console.log(data[input.value])
+
+            if (!returntopic) for (let i = 0; i < 1; i++) {
                 data.forEach(topic => {
-                    if (hamming_distance(topic.name,input.value) <= def) {
+                    if (hamming_distance(topic,input.value) <= def) {
                         def--;
-                        returntopic = topic.name
+                        returntopic = topic
                     }
                 });
             }
@@ -96,10 +100,13 @@ var search = {
                 "hdist":hamming_distance(returntopic,input.value),
                 "def":def
             };
-            
+
         }).then(topic => {
-            if (topic && topic.name) suggestion.innerHTML = `You meant <a onclick="document.getElementById('MInput').value = '${topic.name}'">${topic.name}</a>? hm: ${topic.hdist} || def: ${topic.def}`
-            else suggestion.innerHTML = ""
+            var s = ""
+            if (topic && topic.name) s = `You meant <a onclick="document.getElementById('MInput').value = '${topic.name}'">${topic.name}</a>? hm: ${topic.hdist} || def: ${topic.def}`
+            
+            suggest = topic.name
+            suggestion.innerHTML = s
         })
     }
 }
