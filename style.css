@@ -57,3 +57,12 @@ input:hover {
 input:active {
     background: rgb(150, 150, 150);
 }
+
+a {
+    cursor:pointer;
+    color:#6cadff;
+}
+
+a:hover {
+    color: #7766ff;
+}
