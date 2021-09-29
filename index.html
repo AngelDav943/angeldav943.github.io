@@ -5,9 +5,10 @@
     </head>
     <body>
         <img style="height:100px; width:auto;" src="https://static.angeldc943.repl.co/assets/images/oldmonitor.png">
-        <p id="ForumInfo"></p>
+        <p id="ForumInfo">Loading...</p>
         <article class="container">
-            <input id="MInput" type="text" placeholder="Search topic/post">
+            <p id="MSuggest" style="zoom: 50%; margin:0%;"></p>
+            <input id="MInput" type="text" placeholder="Search topic/post" oninput="search.suggestion()">
             <div class="buttons">
                 <input type="button" value="search post" onclick="search.post()">
                 <input type="button" value="search topic" onclick="search.topic()">

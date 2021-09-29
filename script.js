@@ -2,7 +2,6 @@ const input = document.getElementById('MInput')
 const output = document.getElementById('MOutput')
 
 var last_fetch;
-
 function getForumData() {
     return new Promise(function(resolve, reject) {
         if (!last_fetch) {
@@ -17,6 +16,15 @@ function getForumData() {
             resolve(last_fetch)
         }
     })
+}
+
+function hamming_distance(string1, string2) {
+	var dist_counter = 0
+    for (let n = 0; n < string1.length; n++) {
+        
+        if (string1[n] != string2[n]) dist_counter += 1
+    }
+	return dist_counter
 }
 
 function forumBasicInfo() {
@@ -37,17 +45,25 @@ var search = {
     post: function() {
         output.innerHTML = "searching post..."
         
-        
+        setTimeout(function() {
+            output.innerHTML = "Error finding post."
+            input.value = ""
+        },2000)
     },
     topic: function() {
         output.innerHTML = "searching topic.."
         
         getForumData().then(data => {
             var returntopic;
+            var def = 5;
             for (let i = 0; i < data.length; i++) {
                 const topic = data[i];
-                //console.log(`${topic.name} ?? ${input.value} || ${topic.name <= input.value}`)
-                if (topic.name <= input.value) returntopic = topic.name;
+
+                if (hamming_distance(topic.name,input.value) <= def) {
+                    def--;
+                    returntopic = topic.name
+                }
+
             }
             return returntopic;
         }).then(topicname => {
@@ -55,5 +71,24 @@ var search = {
             input.value = "";
         })
         //'general' <= 'general'
+    },
+    suggestion: function() {
+        var suggestion = document.getElementById('MSuggest')
+        getForumData().then(data => {
+            var returntopic;
+            var def = 5;
+            for (let i = 0; i < data.length; i++) {
+                const topic = data[i];
+
+                if (hamming_distance(topic.name,input.value) <= def) {
+                    def--;
+                    returntopic = topic.name
+                }
+
+            }
+            return returntopic;
+        }).then(topicname => {
+            suggestion.innerHTML = `Did you mean ${topicname}?`
+        })
     }
 }
