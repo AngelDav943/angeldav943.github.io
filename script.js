@@ -70,7 +70,6 @@ var search = {
             output.innerHTML = `Did you mean ${topicname}?`
             input.value = "";
         })
-        //'general' <= 'general'
     },
     suggestion: function() {
         var suggestion = document.getElementById('MSuggest')
@@ -88,7 +87,7 @@ var search = {
             }
             return returntopic;
         }).then(topicname => {
-            suggestion.innerHTML = `Did you mean ${topicname}?`
+            if (topicname) suggestion.innerHTML = `Did you mean ${topicname}?`
         })
     }
 }
