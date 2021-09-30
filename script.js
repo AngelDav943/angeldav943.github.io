@@ -1,32 +1,29 @@
 const input = document.getElementById('MInput')
 const output = document.getElementById('MOutput')
 
-var last_fetch;
-function getForumData() {
+function getData(api_point) {
     return new Promise(function(resolve, reject) {
-        if (!last_fetch) {
-            fetch("https://angeldc943.repl.co/api/forum/get").then(res => {
-                res.json().then(data => {
-                    last_fetch = data;
-                    resolve(data)
-                })
+        fetch("https://angeldc943.repl.co/api/"+api_point).then(res => {
+            res.json().then(data => {
+                resolve(data)
             })
-        } else {
-            resolve(last_fetch)
-        }
+        })
     })
 }
 
 function hamming_distance(string1, string2) {
 	var dist_counter = 0
     for (let n = 0; n < string1.length; n++) {
-        if (string1[n] != string2[n]) dist_counter += 1
+        if (string1[n] != string2[n]) 
+            dist_counter += 1
     }
+    //console.log(string2.substring(string1.length))
+
 	return dist_counter
 }
 
-function forumBasicInfo() {
-    getForumData().then(data => {
+function BasicInfo() {
+    getData("forum/get").then(data => {
         var total_posts = 0;
         for (let i = 0; i < data.length; i++) {
             const topic = data[i];
@@ -39,21 +36,13 @@ function forumBasicInfo() {
     })
 }
 
-forumBasicInfo()
+BasicInfo()
 
 var search = {
-    post: function() {
-        output.innerHTML = "searching post..."
+    find: function(suggestion) {
+        output.innerHTML = `Searching ${input.value}..`
         
-        setTimeout(function() {
-            output.innerHTML = "Error finding post."
-            input.value = ""
-        },2000)
-    },
-    topic: function(suggestion) {
-        output.innerHTML = `Searching topic ${input.value}..`
-        
-        getForumData().then(data => {
+        getData("users/get").then(data => {
             document.getElementById('ForumOuput').innerHTML += `<p>${input.value}</p>`
             output.innerHTML = "";
             input.value = "";
@@ -61,26 +50,25 @@ var search = {
     },
     suggestion: function() {
         var suggestion = document.getElementById('MSuggest')
-        getForumData().then(forumdata => {
+        getData("users/get").then(userdata => {
             var data = [];
-            forumdata.forEach(topic => {
-                data.push(topic.name);
-                topic.posts.forEach(post => {
-                    data.push(`${topic.name} ${post.index+1}`);
-                });
+            userdata.forEach(user => {
+                data.push(user.name);
             })
             
             var returntopic;
-            var def = 5;
+            var def = input.value.length*10;
+            var user_element = data.findIndex( (element) => element.toLowerCase() == input.value.toLowerCase());
 
-            for (let i = 0; i < 1; i++) {
-                for (let d = 0; d < data.length; d++) {
-                    const topic = data[d];
-                    if (hamming_distance(topic,input.value) <= def) {
-                        def--;
-                        returntopic = topic
-                        if (topic == input.value) break;
-                    }
+            if (user_element != -1) returntopic = data[user_element]
+
+            if (!returntopic) for (let d = 0; d < data.length; d++) {
+                const user = data[d];
+                const dist = hamming_distance(user.toLowerCase(),input.value.toLowerCase());
+                //console.log(def)
+                if (dist < user.length && dist <= def) {
+                    def--;
+                    returntopic = user
                 }
             }
 
