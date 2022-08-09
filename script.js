@@ -41,7 +41,7 @@ const output = {
 }
 
 function char_distance(string, targetstring) {
-    var dist_counter = 0
+    var dist_counter = 0;
     string = String(string).toLowerCase();
     targetstring = String(targetstring).toLowerCase();
     
@@ -49,6 +49,21 @@ function char_distance(string, targetstring) {
         if (targetstring[n] != string[n] && string[n] != undefined) 
         dist_counter += 1
     }
+
+    var n_tarstring = targetstring.replace(/\D/g, "");
+    var n_string = string.replace(/\D/g, "");
+    if (n_tarstring != "" && n_string != "") {
+        var numsim = 0;
+        for (let n = 0; n < n_tarstring.length; n++) {
+            if (n_tarstring[n] == n_string[n] && n_string[n] != undefined) 
+            numsim += 1
+        }
+        dist_counter -= numsim
+    }
+
+    if (string == targetstring) dist_counter = 0;
+    //console.log(string + " -- " + targetstring + "? " + dist_counter)
+
     return dist_counter
 }
 
