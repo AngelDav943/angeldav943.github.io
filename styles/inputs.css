@@ -1,0 +1,55 @@
+a {
+    color: var(--blue);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+input, button, a.button, a.submit {
+    font-size: 1em;
+    padding: 0.75em 0.8em;
+    
+    border: none;
+    outline: solid 1px var(--outline);
+    border-radius: 0.25em;
+}
+
+input::placeholder {
+    transition: 0.2s color;
+}
+
+input:focus::placeholder {
+    color: var(--outline);
+}
+
+input[type="submit"], a.submit  {
+    background-color: var(--blue);
+    color: white;
+    cursor: pointer;
+    outline: none;
+}
+
+input[type="button"], button, a.button {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    color: var(--blue)
+}
+
+input[type="button"]:hover, button:hover, a.button:hover {
+    color: var(--darkblue);
+    cursor: pointer;
+    background-color: var(--transparent-blue);
+}
+
+input:not([type="submit"], [type="button"]):focus {
+    outline: solid 2px var(--blue);
+    transition: 0.1s outline;
+}
+
+input[type="button"]:active, button:active, a.button:active {
+    outline: 2px solid var(--blue);
+}
+
+input[type="submit"]:active, a.submit:active {
+    background-color: var(--darkblue);
+}

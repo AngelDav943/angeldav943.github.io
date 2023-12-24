@@ -1,0 +1,40 @@
+header {
+    width: calc(100% - 2em);
+    background-color: white;
+    border-bottom: 1px solid var(--outline);
+    height: 3em;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5em 1em;
+
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+header div.left {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header nav {
+    margin-left: 25px;
+}
+
+header img[alt="Logo"] {
+    height: 3em;
+}
+
+@media screen and (max-width: 401px) {
+    header {
+        justify-content: center;
+    }
+
+    header div.left {
+        display: none;
+    }
+}
