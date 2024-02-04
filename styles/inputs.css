@@ -5,12 +5,12 @@ a {
 }
 
 input, button, a.button, a.submit {
-    font-size: 1em;
-    padding: 0.75em 0.8em;
+    font-size: 1rem;
+    padding: 0.75em 0.8rem;
     
     border: none;
     outline: solid 1px var(--outline);
-    border-radius: 0.25em;
+    border-radius: 0.25rem;
 }
 
 input::placeholder {
