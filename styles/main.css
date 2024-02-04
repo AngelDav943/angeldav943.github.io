@@ -51,7 +51,7 @@ section.gray {
 
 section.blueprint{
     color: white;
-    background: url("../assets/blueprint_tiles0.png");
+    background: url("../assets/blueprint_tiles.png");
     background-size: 2rem;
     padding: 25px 5%;
 }
